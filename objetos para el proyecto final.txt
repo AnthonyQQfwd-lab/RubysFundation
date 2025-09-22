@@ -1,0 +1,62 @@
+usuarios
+
+nombre
+cedula 
+correo electrónico 
+Teléfono
+contraseña
+cantidad de publicaciones
+cantidad de adopciones
+cantidad de animales rescatados 
+
+-------------------------------------------------------
+
+animales Adopción
+
+nombre
+fotos 
+especie 
+raza
+edad 
+tamaño 
+descripción
+carta de salud 
+comportamientos 
+ubicación
+
+---------------------------------------
+
+animales perdidos  
+
+Fotos  
+especie
+raza
+tamaño
+descripción 
+ubicaciones encontrado 
+
+---------------------------------------
+
+animales buscados 
+
+Nombre 
+Fotos 
+especie
+taza
+tamaño
+descripción 
+ubicación donde fue visto por ultima vez 
+----------------------------------------
+
+administrador 
+
+nombre 
+cedula
+correo electrónico 
+contraseña 
+
+---------------------------
+ 
+
+
+
