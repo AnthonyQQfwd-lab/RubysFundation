@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { getUsers } from '../services/ServicesUsers';
 import { Link } from 'react-router-dom'
+import '../styles/LoginPage/LoginPage.css'
+
 function LogInForm() {
     const navigate = useNavigate();
     const [userGmail, setUserGmail] = useState("");
@@ -24,48 +26,55 @@ function LogInForm() {
 
     async function logInUser() {
 
+        try {
+            
+       
 
+            // Validación 1: Verificar que todos los campos estén completos
+            if (userGmail.trim() === '' || userPassword.trim() === '') {
+                alert("fill empty spaces")
+                return;
+            }
 
-        // Validación 1: Verificar que todos los campos estén completos
-        if (userGmail.trim() === '' || userPassword.trim() === '') {
-            alert("fill empty spaces")
-            return;
-        }
-
-        const verifiedUser = users.find(u =>
-            u.userGmail.trim().toLowerCase() === userGmail.trim().toLowerCase() &&
-            u.userPassword === userPassword
-        )
-
-        if(verifiedUser)
-        {
-            // ========== AUTENTICACIÓN EXITOSA ==========
-
-            // Guardar datos del usuario en sessionStorage para mantener la sesión
-            sessionStorage.setItem(
-                    "currentUser",
-                    JSON.stringify({
-                    Name: verifiedUser.UserName,
-                    userId: verifiedUser.userId,
-                    gmail: verifiedUser.userGmail,
-                    phoneNumber: verifiedUser.userPhoneNumber,
-                    helpedPets: verifiedUser. userHelpedPets,
-                    adoptedPets: verifiedUser.userAdoptedPets
-                })
+            const verifiedUser = users.find(u =>
+                u.userGmail.trim().toLowerCase() === userGmail.trim().toLowerCase() &&
+                u.userPassword === userPassword
             )
-            alert("Sign in correctly")
-            navigate('/Home');
-        }
-        else
-        {
-            alert("Gmail or password wrong")
+
+            if(verifiedUser)
+            {
+                // ========== AUTENTICACIÓN EXITOSA ==========
+
+                // Guardar datos del usuario en sessionStorage para mantener la sesión
+                sessionStorage.setItem(
+                        "currentUser",
+                        JSON.stringify({
+                        Name: verifiedUser.UserName,
+                        userId: verifiedUser.userId,
+                        gmail: verifiedUser.userGmail,
+                        phoneNumber: verifiedUser.userPhoneNumber,
+                        helpedPets: verifiedUser. userHelpedPets,
+                        adoptedPets: verifiedUser.userAdoptedPets
+                    })
+                )
+                localStorage.setItem("token", verifiedUser.id)
+                alert("Sign in correctly")
+                navigate('/Home');
+            }
+            else
+            {
+                alert("Gmail or password wrong")
+            }
+        } 
+        catch (error) {
+            console.error("login error", error)
         }
 
 
     }
 
   return (
-    <div>
+    <div id="loginFormContainer">
         <h1>LoginPage<br /> 
             <label>Gmail</label><br />
             <input type="email" value={userGmail} onChange={e => setUserGmail(e.target.value)}/><br />

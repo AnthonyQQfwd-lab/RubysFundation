@@ -1,8 +1,11 @@
 import React from 'react'
 import LogInForm from '../components/LogInForm'
+import FundationLogo from '../components/FundationLogo'
+import '../styles/LoginPage/LoginPage.css'
 function LoginPage() {
   return (
-    <div>
+    <div id="loginPageStyle">
+        <FundationLogo />
         <LogInForm />
     </div>
   )
