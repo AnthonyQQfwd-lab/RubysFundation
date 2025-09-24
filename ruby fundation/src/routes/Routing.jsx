@@ -16,7 +16,7 @@ const Routing = () => {
             {/*path es como saldra en la url */}
             {/*si se desea agregar otra ruta solamente se hace lo mismo pero con su respectivo path y elemento */}
             <Route path='Register' element={<RegisterPage />} />
-            <Route path='Login' element={<LoginPage />} />
+            <Route path='/' element={<LoginPage />} />
             <Route path='Home' element={<PrivateRoute><HomePage /></PrivateRoute>} />
             <Route path='Message' element={<PrivateRoute><MessagePage /></PrivateRoute>} />
             <Route path='Wanted' element={<PrivateRoute><WantedPage /></PrivateRoute>} />

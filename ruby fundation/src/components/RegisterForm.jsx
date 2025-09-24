@@ -13,6 +13,7 @@ function RegisterForm() {
     const [userPassword, setUserPassword] =useState("");
     const [userHelpedPets, setUserHelpedPets] = useState(0);
     const [userAdoptedPets, setUserAdoptedPets] = useState(0);
+    const [userUbication, setUserUbication] = useState("")
 
     const [users, setUsers] = useState (null)
 
@@ -36,7 +37,7 @@ function RegisterForm() {
      async function userRegister()
     {
         // Validación 1: Verificar que todos los campos estén completos
-        if (userName.trim() === '' || userGmail.trim() === '' || userPassword.trim() === '' || userPhoneNumber.trim() === '' || userId.trim() === '') {
+        if (userName.trim() === '' || userGmail.trim() === '' || userPassword.trim() === '' || userPhoneNumber.trim() === '' || userId.trim() === '' || userUbication.trim() === '') {
             alert("fill empty spaces")
             return;
         }
@@ -61,14 +62,15 @@ function RegisterForm() {
             userPassword: userPassword,
             userPhoneNumber: userPhoneNumber,
             userHelpedPets: 0,
-            userAdoptedPets: 0
+            userAdoptedPets: 0,
+            userUbication: userUbication
         };
         
 
         await createUsers(newUser);
 
         alert("now sign in ")
-        navigate('/LogIn');
+        navigate('/');
     }
   return (
     <div>
@@ -83,7 +85,7 @@ function RegisterForm() {
         <label>Phone Number</label><br />
         <input type="text" value={userPhoneNumber} onChange={(e) => setUserPhoneNumber(e.target.value)}/><br />
         <label>Ubication</label><br />
-        <input type="text" /><br />
+        <input type="text" value={userUbication} onChange={(e) => setUserUbication(e.target.value)}/><br />
         <label>Password</label><br />
         <input type="text" value={userPassword} onChange={(e) => setUserPassword(e.target.value)}/><br />
         <button onClick={userRegister}>Register</button>

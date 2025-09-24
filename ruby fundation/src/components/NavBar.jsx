@@ -7,7 +7,7 @@ function NavBar() {
     const navigate = useNavigate();
     function singOut()
     {
-        navigate('/LogIn');
+        navigate('/');
         localStorage.removeItem('token');
     }
 
