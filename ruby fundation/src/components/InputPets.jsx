@@ -5,7 +5,14 @@ import '../styles/PostPage/PostPage.css';
 function InputPets() {
   const [images, setImagesBase64] = useState([]);
   const [pets, setPets] = useState([]);
+  const [petName, setPetName] = useState("");
+  const [petBreed, setPetBreed] = useState("");
+  const [petSize, setPetSize] = useState("");
+  const [petSpecie, setPetSpecie] = useState("");
+  const [petAge, setPetAge] = useState("");
+  const [petUbication, setPetUbication] = useState("");
 
+  // solo convierte imágenes a base64 y guarda en el estado
   async function uploadImage(e) {
     const files = Array.from(e.target.files);
 
@@ -20,27 +27,37 @@ function InputPets() {
 
     try {
       const base64Images = await Promise.all(base64Promises);
-      setImagesBase64(base64Images); // guarda previews en el estado
-
-      const pet = {
-        nombre: 'rofus',
-        fotos: base64Images,
-      };
-
-      await createPets(pet);
-      
+      setImagesBase64(base64Images); 
     } catch (error) {
-      console.error('Error to convert images:', error);
+      console.error('Error converting images:', error);
     }
   }
 
+  // ahora sí, publica todo el objeto
   async function publish() {
-    const pets = await getPets();
-    setPets(pets);
+    const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+    const pet = {
+      photos: images,
+      name: petName,
+      keeper: currentUser.Name,
+      specie: petSpecie,
+      breed: petBreed,
+      size: petSize,
+      age: petAge,
+      ubication: petUbication
+    };
+
+    try {
+      await createPets(pet); // ⬅️ aquí mandas TODO junto
+      const pets = await getPets();
+      setPets(pets);
+    } catch (error) {
+      console.error("Error publishing pet:", error);
+    }
   }
 
   return (
-    <div>
+    <div id="inputPetContainer">
       {/* Input oculto */}
       <input
         id="file-upload"
@@ -52,37 +69,39 @@ function InputPets() {
       />
 
       {/* Label rectangular personalizado */}
-      <label
-        id="imageInput"
-        htmlFor="file-upload"
-        
-      >
+      <label id="imageInput" htmlFor="file-upload">
         Click or drag images here
       </label>
 
-      {/* Previews de las imágenes cargadas en esta sesión */}
+      {/* Previews */}
       <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '20px' }}>
         {images.map((img, index) => (
-          <img
-            key={index}
-            src={img}
-            alt={`preview-${index}`}
-          />
+          <img key={index} src={img} alt={`preview-${index}`} />
         ))}
+      </div>
+
+      <div id="inputPetTextContainer" style={{ display: "flex", gap: "20px" }}>
+        <div id="leftSide">
+          <label>Name</label><br/>
+          <input value={petName} onChange={(e) => setPetName(e.target.value)} /><br/>
+          <label>Breed</label><br/>
+          <input type="text" value={petBreed} onChange={(e) => setPetBreed(e.target.value)} /><br/>
+          <label>Size</label><br/>
+          <input type="text" value={petSize} onChange={(e) => setPetSize(e.target.value)} /><br/>
+        </div>
+        <div id="rightSide">
+          <label>Specie</label><br/>
+          <input type="text" value={petSpecie} onChange={(e) => setPetSpecie(e.target.value)} /><br/>
+          <label>Age</label><br/>
+          <input type="number" value={petAge} onChange={(e) => setPetAge(e.target.value)} /><br/>
+          <label>Ubication</label><br/>
+          <input type="text" value={petUbication} onChange={(e) => setPetUbication(e.target.value)} /><br/>
+        </div>
       </div>
 
       <button onClick={publish}>publish pet</button>
 
-      {/* Previsualización de mascotas desde DB */}
-      {pets.map((pet, petIndex) =>
-        pet.fotos.map((foto, index) => (
-          <img
-            key={`${petIndex}-${index}`}
-            src={foto.startsWith('data:image') ? foto : `data:image/jpeg;base64,${foto}`}
-            alt={`Pet ${petIndex} - Imagen ${index + 1}`}
-          />
-        ))
-      )}
+      
     </div>
   );
 }

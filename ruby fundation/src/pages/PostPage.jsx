@@ -4,7 +4,6 @@ import InputPets from '../components/InputPets'
 function PostPage() {
   return (
     <div>
-        PostPage
         <NavBar />
         <InputPets />
     </div>
