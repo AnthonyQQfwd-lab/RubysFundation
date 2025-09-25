@@ -11,7 +11,13 @@ function InputPets() {
   const [petSpecie, setPetSpecie] = useState("");
   const [petAge, setPetAge] = useState("");
   const [petUbication, setPetUbication] = useState("");
+  const fileInputRef = React.useRef(null);
+  const [petDescription, setpetDescription] = useState("")
 
+  const adoptionModalRef  = React.useRef(null)
+  const [showAdoptionModal, setAdoptionModal] = useState(false)
+  const [showWantedModal, setWantedModal] = useState(false)
+  const [showMissingModal, setMissingModal] = useState(false)
   // solo convierte imágenes a base64 y guarda en el estado
   async function uploadImage(e) {
     const files = Array.from(e.target.files);
@@ -33,74 +39,152 @@ function InputPets() {
     }
   }
 
-  // ahora sí, publica todo el objeto
+  
   async function publish() {
     const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
     const pet = {
       photos: images,
       name: petName,
-      keeper: currentUser.Name,
+      keeper: currentUser.userId,
       specie: petSpecie,
       breed: petBreed,
       size: petSize,
       age: petAge,
+      description: petDescription,
       ubication: petUbication
     };
 
     try {
-      await createPets(pet); // ⬅️ aquí mandas TODO junto
+      await createPets(pet); 
       const pets = await getPets();
+
+
+
       setPets(pets);
+      setImagesBase64([]);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = null;
+      }
+      setPetName("")
+      setPetAge("")
+      setPetSpecie("")
+      setPetBreed("")
+      setPetSize("")
+      setPetUbication("")
+      setpetDescription("")
+
     } catch (error) {
       console.error("Error publishing pet:", error);
     }
+
+    
+
   }
+
+  function showModalAdoptionPet()
+  {
+    //dialogDesc.close();
+    //dialo
+    // gDesc.showModal();
+  }
+
+  function openAdoptionModal() {
+    if (adoptionModalRef.current) {
+      adoptionModalRef.current.showModal();
+    }
+  }
+
+  function closeAdoptionModal() {
+    if (adoptionModalRef.current) {
+      adoptionModalRef.current.close();
+    }
+  }
+
+
 
   return (
     <div id="inputPetContainer">
-      {/* Input oculto */}
       <input
         id="file-upload"
         type="file"
         accept="image/*"
         multiple
         onChange={uploadImage}
+        ref={fileInputRef}
         style={{ display: 'none' }}
       />
-
-      {/* Label rectangular personalizado */}
-      <label id="imageInput" htmlFor="file-upload">
-        Click or drag images here
-      </label>
-
-      {/* Previews */}
-      <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', marginBottom: '20px' }}>
-        {images.map((img, index) => (
-          <img key={index} src={img} alt={`preview-${index}`} />
-        ))}
+      <h2>create publication for</h2>
+      <div id="btnsContainer">
+          <button onClick={() => { openAdoptionModal(); setAdoptionModal(true); setMissingModal(false)}}>Adoption Pet</button>
+          <button onClick={() => { openAdoptionModal(); setWantedModal(true); setMissingModal(false)}}>Wanted Pet</button>
+          <button onClick={() => { openAdoptionModal(); setMissingModal(true); }}>Missing Pet</button>
       </div>
+      
+      
+      <dialog id="adoptionModal" ref={adoptionModalRef}      >
+        <label id="imageInput" htmlFor="file-upload">
+          Click or drag images here
+        </label>
 
-      <div id="inputPetTextContainer" style={{ display: "flex", gap: "20px" }}>
-        <div id="leftSide">
-          <label>Name</label><br/>
-          <input value={petName} onChange={(e) => setPetName(e.target.value)} /><br/>
-          <label>Breed</label><br/>
-          <input type="text" value={petBreed} onChange={(e) => setPetBreed(e.target.value)} /><br/>
-          <label>Size</label><br/>
-          <input type="text" value={petSize} onChange={(e) => setPetSize(e.target.value)} /><br/>
+        {/* Previews */}
+        <div id="previewImages">
+          {images.map((img, index) => (
+            <img key={index} src={img} alt={`preview-${index}`} />
+          ))}
         </div>
-        <div id="rightSide">
-          <label>Specie</label><br/>
-          <input type="text" value={petSpecie} onChange={(e) => setPetSpecie(e.target.value)} /><br/>
-          <label>Age</label><br/>
-          <input type="number" value={petAge} onChange={(e) => setPetAge(e.target.value)} /><br/>
-          <label>Ubication</label><br/>
-          <input type="text" value={petUbication} onChange={(e) => setPetUbication(e.target.value)} /><br/>
+      
+        <div id="inputPetTextContainer">
+          <div id="leftSide">
+
+              {!showMissingModal ? (
+                <>
+                  <label>Name</label><br/>
+                  <input
+                    type="text"
+                    value={petName}
+                    onChange={(e) => setPetName(e.target.value)}
+                  /><br/>
+                </>
+                ) : null}
+
+                
+
+
+            <label>Breed</label><br/>
+            <input type="text" value={petBreed} onChange={(e) => setPetBreed(e.target.value)} /><br/>
+            <label>Size</label><br/>
+            <input type="text" value={petSize} onChange={(e) => setPetSize(e.target.value)} /><br/>
+          </div>
+          <div id="rightSide">
+
+
+                {!showMissingModal ? (
+                <>
+                  <label>Age</label><br/>
+                  <input
+                    type="number"
+                    value={petAge}
+                    onChange={(e) => setPetAge(e.target.value)}
+                  /><br/>
+                </>
+                ) : null}
+
+
+            <label>Specie</label><br/>
+            <input type="text" value={petSpecie} onChange={(e) => setPetSpecie(e.target.value)} /><br/>
+
+
+            <label>Ubication</label><br/>
+            <input type="text" value={petUbication} onChange={(e) => setPetUbication(e.target.value)} /><br/>
+          </div>
+          
         </div>
-      </div>
+        <label>description</label><br/>
+        <input id="petDescription"type="text" value={petDescription} onChange={(e) => setpetDescription(e.target.value)}/>
+        <button onClick={publish}>publish pet</button>
+        <button onClick={closeAdoptionModal}>Close</button>
 
-      <button onClick={publish}>publish pet</button>
-
+      </dialog>
       
     </div>
   );

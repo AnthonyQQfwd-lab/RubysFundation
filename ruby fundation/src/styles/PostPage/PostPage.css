@@ -42,3 +42,25 @@ img{
 #lefttSite, #rightSide {
   flex: 1; 
 }
+
+
+#previewImages
+{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+#btnsContainer
+{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+#petDescription
+{
+   width: 200px;
+   height: 50px;
+}
