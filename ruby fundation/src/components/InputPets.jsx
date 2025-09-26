@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { getPets, createPets } from '../services/ServicesAdoptionPets';
+import { createMissingPets } from '../services/ServicesMissingPets';
+import { createSearchingPets } from '../services/ServicesSearchingPets';
 import '../styles/PostPage/PostPage.css';
 
 function InputPets() {
@@ -42,6 +44,7 @@ function InputPets() {
   
   async function publish() {
     const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+
     const pet = {
       photos: images,
       name: petName,
@@ -55,7 +58,22 @@ function InputPets() {
     };
 
     try {
-      await createPets(pet); 
+
+      if(showAdoptionModal === true)
+      {
+        await createPets(pet);
+      } 
+
+      if(showMissingModal === true)
+      {
+        await createMissingPets(pet);
+      }
+
+      if(showWantedModal === true)
+      {
+        await createSearchingPets(pet)
+      }
+
       const pets = await getPets();
 
 
@@ -115,9 +133,9 @@ function InputPets() {
       />
       <h2>create publication for</h2>
       <div id="btnsContainer">
-          <button onClick={() => { openAdoptionModal(); setAdoptionModal(true); setMissingModal(false)}}>Adoption Pet</button>
-          <button onClick={() => { openAdoptionModal(); setWantedModal(true); setMissingModal(false)}}>Wanted Pet</button>
-          <button onClick={() => { openAdoptionModal(); setMissingModal(true); }}>Missing Pet</button>
+          <button onClick={() => { openAdoptionModal(); setAdoptionModal(true); setMissingModal(false); setWantedModal(false)}}>Adoption Pet</button>
+          <button onClick={() => { openAdoptionModal(); setWantedModal(true); setMissingModal(false); setAdoptionModal(false)}}>Wanted Pet</button>
+          <button onClick={() => { openAdoptionModal(); setMissingModal(true); setWantedModal(false); setAdoptionModal(false) }}>Missing Pet</button>
       </div>
       
       
@@ -185,7 +203,6 @@ function InputPets() {
         <button onClick={closeAdoptionModal}>Close</button>
 
       </dialog>
-      
     </div>
   );
 }

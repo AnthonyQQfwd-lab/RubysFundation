@@ -2,10 +2,17 @@
 {
     height: 100px;
     width: 100%;
-    background-color: blue;
+    
 }
 
-img
+
+
+#logoNavBar
 {
-    height: 50px;
+    
+    width: 200px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ccc;
 }

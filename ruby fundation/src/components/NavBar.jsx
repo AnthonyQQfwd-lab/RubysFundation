@@ -11,6 +11,11 @@ function NavBar() {
         localStorage.removeItem('token');
     }
 
+    function goToHomePage()
+    {
+      navigate('/Home')
+    }
+
     function goToWantedPage()
     {
       navigate('/wanted')
@@ -33,8 +38,8 @@ function NavBar() {
 
   return (
     <div id="topNav">
-        <img src="https://veryceleb.com/wp-content/uploads/brian-peppers_17594-780x405-768x399.jpeg" alt="" />
-        <button className='active' href='#home'>Home</button>
+        <img id="logoNavBar"src="https://veryceleb.com/wp-content/uploads/brian-peppers_17594-780x405-768x399.jpeg" alt="" />
+        <button onClick={goToHomePage}>Home</button>
         <button onClick={goToWantedPage}>Wanted</button>
         <button onClick={goToProfilePage}>Profile</button>
         <button onClick={goToPostPage}>Create</button>

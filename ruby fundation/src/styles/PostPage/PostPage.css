@@ -14,16 +14,10 @@
 
 }
 
-img{
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-}
+
 
 #inputPetContainer {
-    background-color: red;
+    
     display: flex;
     flex-direction: column;
     justify-content: center;
