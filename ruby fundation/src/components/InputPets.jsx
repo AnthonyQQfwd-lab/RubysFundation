@@ -48,7 +48,8 @@ function InputPets() {
     const pet = {
       photos: images,
       name: petName,
-      keeper: currentUser.userId,
+      keeper: currentUser.Name,
+      keeperId: currentUser.userId,
       specie: petSpecie,
       breed: petBreed,
       size: petSize,

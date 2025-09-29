@@ -16,7 +16,7 @@ body{
 {
     height: fit-content;
     width: fit-content;
-    background-color: gray;
+    background-color: antiquewhite;
     border-radius: 5%;
 }
 
@@ -25,6 +25,27 @@ body{
     width: 100px;
     height: 100px;
     object-fit: cover;
+    
     border-radius: 8px;
     border: 1px solid #ccc;
+}
+
+#cardsContainer
+{
+    display: flex;
+    gap: 20px;
+    flex-wrap:  wrap;
+    max-width: 100%;
+}
+
+.photosContainer
+{
+    display: grid;
+    justify-content: center;
+    text-align: center;
+}
+
+.petCards
+{
+    max-width: 200px;
 }
