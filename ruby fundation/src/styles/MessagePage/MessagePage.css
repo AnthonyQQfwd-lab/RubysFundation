@@ -1,0 +1,36 @@
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+#messagePageWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; 
+}
+
+#messagePageContainer {
+  display: flex;
+  flex: 1; 
+  overflow: hidden;
+}
+
+#leftSide {
+  width: 30%;
+  background-color: bisque;
+  overflow-y: auto; 
+  display: flex;
+  flex-direction: column;
+}
+
+#rightSide {
+  width: 70%;
+  background-color: #f0f0f0;
+  overflow-y: auto;
+}
+
+.tittleChat {
+  font-size: 20px;
+}
