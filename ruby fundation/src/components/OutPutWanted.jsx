@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { getPets } from '../services/ServicesAdoptionPets'
-
+import { getMissingPets } from '../services/ServicesMissingPets';
+import { getSearchingPets } from '../services/ServicesSearchingPets';
 import Card from 'react-bootstrap/Card';
 import Modal from 'react-bootstrap/Modal';
-import '../styles/HomePage/HomePage.css'
+
 import CarouselPet from './CarouselPet';
 import ContactBtn from './ContactBtn';
 
-
-function OutPutAdoption() {
-    const [pets, setPets] = useState([])
+function OutPutWanted() {
+const [pets, setPets] = useState([])
     const [pet, setPet] = useState({})
     const [showModal, setShowModal] = useState(false)
     
@@ -18,8 +17,8 @@ function OutPutAdoption() {
     useEffect(() => {
         const fetchPets = async () => {
             try {
-                const adoptionPets = await getPets()
-                setPets(adoptionPets)
+                const MissingPets = await getMissingPets()
+                setPets(MissingPets)
             } catch (error) {
                 console.error("Error getting pets", error)
             }
@@ -59,7 +58,7 @@ function OutPutAdoption() {
                     <h2>{pet.name}</h2>
                     <p>{pet.specie}</p>
                     <p> Ubication: {pet.ubication}</p>
-                    <p> Size: {pet.size} - {pet.age} years  </p>
+                    <p> Size: {pet.size}</p>
                     <h4>description</h4>
                     <p>{pet.description}</p>
                     <h4>Keeper</h4>
@@ -96,4 +95,4 @@ function OutPutAdoption() {
     )
 }
 
-export default OutPutAdoption
+export default OutPutWanted

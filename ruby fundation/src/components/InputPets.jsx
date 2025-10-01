@@ -57,7 +57,7 @@ function InputPets() {
       description: petDescription,
       ubication: petUbication
     };
-
+    
     try {
 
       if(showAdoptionModal === true)
@@ -67,6 +67,7 @@ function InputPets() {
 
       if(showMissingModal === true)
       {
+        
         await createMissingPets(pet);
       }
 
@@ -100,12 +101,7 @@ function InputPets() {
 
   }
 
-  function showModalAdoptionPet()
-  {
-    //dialogDesc.close();
-    //dialo
-    // gDesc.showModal();
-  }
+
 
   function openAdoptionModal() {
     if (adoptionModalRef.current) {
