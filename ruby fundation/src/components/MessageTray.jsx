@@ -3,39 +3,7 @@ import '../styles/MessagePage/MessagePage.css'
 import { getMessages } from '../services/ServicesMessage'
 import Card from 'react-bootstrap/Card';
 
-function MessageTray({ setCurrentConversation }) {
-    const [conversations, setConversations] = useState([])
-    const [myConversations, setMyConversations] = useState([])
-    const [currentUser, setCurrentUser] = useState(null)
-    
-    useEffect(() => {
-        const fetchConversations = async () => {
-            try {
-                const conversations = await getMessages()
-                setConversations(conversations)
-            } catch (error) {
-                console.error("Error getting conversations", error)
-            }
-        }
-
-        fetchConversations()
-        const interval = setInterval(fetchConversations, 5000) 
-        return () => clearInterval(interval) 
-    }, [])
-
-    useEffect(() => {
-        const user = JSON.parse(sessionStorage.getItem("currentUser"));
-        setCurrentUser(user);
-
-        const filterConversations = conversations.filter(conversation =>
-            conversation.participants.some(participant => participant.userId === user.userId)
-        );
-        setMyConversations(filterConversations);
-    }, [conversations])
-
-    function aqui() {
-        alert("si funciona ")
-    }
+function MessageTray({ setCurrentConversation, myConversations, currentUser }) {
     
     return (
         <div id="leftSide">
@@ -43,7 +11,11 @@ function MessageTray({ setCurrentConversation }) {
                 <Card key={conversation.id} className="mb-2 p-2 shadow-sm" onClick={() => { setCurrentConversation(conversation)}}>
                     <Card.Header>
                         {conversation.participants.map(participant =>
-                            participant.userId !== currentUser.userId ? <h1 className='tittleChat'>{participant.UserName}</h1> : null
+                            participant.userId !== currentUser.userId ? (
+                                <h1 key={participant.userId} className='tittleChat'>
+                                {participant.UserName}
+                                </h1>
+                            ) : null
                         )}
                     </Card.Header>
                     <Card.Body>

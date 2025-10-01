@@ -27,10 +27,39 @@ html, body, #root {
 
 #rightSide {
   width: 70%;
+  height: 100%;
   background-color: #f0f0f0;
   overflow-y: auto;
+  
 }
 
 .tittleChat {
   font-size: 20px;
+}
+
+
+#messageBarContainer
+{
+  height: 5;
+  width: 100%;
+  
+  margin-bottom: 0;
+}
+
+#messageChatContainer
+{
+  height: 95%;
+  
+}
+
+
+#inputMessageBar
+{
+  width: 90%;
+}
+
+.messageByUser
+{
+  text-align: end;
+  width: 100%;
 }
