@@ -1,8 +1,7 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getUsers } from '../services/ServicesUsers';
-
-import '../styles/NavBar/NavBar.css'
+import { Navbar, Nav, Container, Button, Image } from 'react-bootstrap';
+import '../styles/NavBar/NavBar.css';
 
 function NavBar() {
   const [user, setUser] = useState({});
@@ -13,44 +12,38 @@ function NavBar() {
     setUser(currentUser);
   }, []);
 
-  function singOut() {
+  const singOut = () => {
     navigate('/');
     localStorage.removeItem('token');
   }
 
-  function goToHomePage() {
-    navigate('/Home');
-  }
-
-  function goToWantedPage() {
-    navigate('/wanted');
-  }
-
-  function goToProfilePage() {
-    navigate('/Profile');
-  }
-
-  function goToPostPage() {
-    navigate('/Post');
-  }
-    
-  function goToMessagePage() {
-    navigate('/Message');
-  }
-
   return (
-    <div id="topNav">
-      <img id="logoNavBar" src="..\public\images\Rubys_Fundation_Logo.png" alt="logo" />
-      <button onClick={goToHomePage}>Home</button>
-      <button onClick={goToWantedPage}>Wanted</button>
-      <button onClick={goToProfilePage}>Profile</button>
-      <button onClick={goToPostPage}>Create</button>
-      <button onClick={goToMessagePage}>Chat</button>
-      <button onClick={singOut}>Log Out</button>
-      
-      
-    </div>
-  )
+    <Navbar expand="lg" bg="dark" variant="dark" className="shadow-sm sticky-top">
+      <Container>
+        <Navbar.Brand onClick={() => navigate('/Home')} style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}>
+          <Image 
+            src="/images/Rubys_Fundation_Logo.png" 
+            alt="logo" 
+            width={50} 
+            height={50} 
+            className="d-inline-block align-top me-2"
+          />
+          Ruby's Fundation
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="ms-auto">
+            <Button variant="outline-light" className="me-2" onClick={() => navigate('/Home')}>Home</Button>
+            <Button variant="outline-light" className="me-2" onClick={() => navigate('/wanted')}>Wanted</Button>
+            <Button variant="outline-light" className="me-2" onClick={() => navigate('/Profile')}>Profile</Button>
+            <Button variant="outline-light" className="me-2" onClick={() => navigate('/Post')}>Create</Button>
+            <Button variant="outline-light" className="me-2" onClick={() => navigate('/Message')}>Chat</Button>
+            <Button variant="danger" onClick={singOut}>Log Out</Button>
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
 }
 
 export default NavBar;

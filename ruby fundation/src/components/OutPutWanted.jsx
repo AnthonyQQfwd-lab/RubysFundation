@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { getMissingPets } from '../services/ServicesMissingPets';
-import { getSearchingPets } from '../services/ServicesSearchingPets';
+
 import Card from 'react-bootstrap/Card';
 import Modal from 'react-bootstrap/Modal';
 
@@ -66,7 +66,6 @@ const [pets, setPets] = useState([])
                 </Modal.Body>
                 <Modal.Footer>
                     <button onClick={() => setShowModal(false)} >close</button>
-                    <button>Send message</button>
                 </Modal.Footer>
             </Modal>
             

@@ -1,50 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { getPets, createPets } from '../services/ServicesAdoptionPets';
 import { createMissingPets } from '../services/ServicesMissingPets';
 import { createSearchingPets } from '../services/ServicesSearchingPets';
-import '../styles/PostPage/PostPage.css';
+import { Container, Row, Col, Card, Button, Form, Modal, Image } from 'react-bootstrap';
 
 function InputPets() {
   const [images, setImagesBase64] = useState([]);
-  const [pets, setPets] = useState([]);
   const [petName, setPetName] = useState("");
   const [petBreed, setPetBreed] = useState("");
   const [petSize, setPetSize] = useState("");
   const [petSpecie, setPetSpecie] = useState("");
   const [petAge, setPetAge] = useState("");
   const [petUbication, setPetUbication] = useState("");
-  const fileInputRef = React.useRef(null);
-  const [petDescription, setpetDescription] = useState("")
+  const [petDescription, setPetDescription] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [petType, setPetType] = useState("Adoption");
 
-  const adoptionModalRef  = React.useRef(null)
-  const [showAdoptionModal, setAdoptionModal] = useState(false)
-  const [showWantedModal, setWantedModal] = useState(false)
-  const [showMissingModal, setMissingModal] = useState(false)
-  // solo convierte imágenes a base64 y guarda en el estado
+  const fileInputRef = useRef(null);
+
   async function uploadImage(e) {
     const files = Array.from(e.target.files);
-
-    const base64Promises = files.map((file) => {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-        reader.readAsDataURL(file);
-      });
-    });
-
+    const base64Promises = files.map(file => new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    }));
     try {
       const base64Images = await Promise.all(base64Promises);
-      setImagesBase64(base64Images); 
+      setImagesBase64(base64Images);
     } catch (error) {
       console.error('Error converting images:', error);
     }
   }
 
-  
   async function publish() {
     const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
-
     const pet = {
       photos: images,
       name: petName,
@@ -56,152 +47,107 @@ function InputPets() {
       age: petAge,
       description: petDescription,
       ubication: petUbication,
-      status: showAdoptionModal? "Adoption": showMissingModal? "Missing": showWantedModal? "Wanted" : "unknow"
+      status: petType
     };
-    
+
     try {
+      if (petType === "Adoption") await createPets(pet);
+      if (petType === "Missing") await createMissingPets(pet);
+      if (petType === "Wanted") await createSearchingPets(pet);
 
-      if(showAdoptionModal === true)
-      {
-        await createPets(pet);
-      } 
-
-      if(showMissingModal === true)
-      {
-        
-        await createMissingPets(pet);
-      }
-
-      if(showWantedModal === true)
-      {
-        await createSearchingPets(pet)
-      }
-
-      const pets = await getPets();
-
-
-
-      setPets(pets);
       setImagesBase64([]);
-      if (fileInputRef.current) {
-        fileInputRef.current.value = null;
-      }
-      setPetName("")
-      setPetAge("")
-      setPetSpecie("")
-      setPetBreed("")
-      setPetSize("")
-      setPetUbication("")
-      setpetDescription("")
-
+      setPetName(""); setPetAge(""); setPetSpecie(""); setPetBreed(""); setPetSize(""); setPetUbication(""); setPetDescription("");
+      if (fileInputRef.current) fileInputRef.current.value = null;
+      setShowModal(false);
     } catch (error) {
       console.error("Error publishing pet:", error);
     }
-
-    
-
   }
-
-
-
-  function openAdoptionModal() {
-    if (adoptionModalRef.current) {
-      adoptionModalRef.current.showModal();
-    }
-  }
-
-  function closeAdoptionModal() {
-    if (adoptionModalRef.current) {
-      adoptionModalRef.current.close();
-    }
-  }
-
-
 
   return (
-    <div id="inputPetContainer">
-      <input
-        id="file-upload"
-        type="file"
-        accept="image/*"
-        multiple
-        onChange={uploadImage}
-        ref={fileInputRef}
-        style={{ display: 'none' }}
-      />
-      <h2>create publication for</h2>
-      <div id="btnsContainer">
-          <button onClick={() => { openAdoptionModal(); setAdoptionModal(true); setMissingModal(false); setWantedModal(false)}}>Adoption Pet</button>
-          <button onClick={() => { openAdoptionModal(); setWantedModal(true); setMissingModal(false); setAdoptionModal(false)}}>Wanted Pet</button>
-          <button onClick={() => { openAdoptionModal(); setMissingModal(true); setWantedModal(false); setAdoptionModal(false) }}>Missing Pet</button>
-      </div>
-      
-      
-      <dialog id="adoptionModal" ref={adoptionModalRef}      >
-        <label id="imageInput" htmlFor="file-upload">
-          Click or drag images here
-        </label>
+    <Container className="my-4">
+      <h2 className="text-center mb-4">Create a Publication</h2>
+      <Row className="justify-content-center mb-3">
+        <Col xs="auto">
+          <Button variant="success" onClick={() => { setPetType("Adoption"); setShowModal(true); }}>Adoption Pet</Button>
+        </Col>
+        <Col xs="auto">
+          <Button variant="warning" onClick={() => { setPetType("Wanted"); setShowModal(true); }}>Wanted Pet</Button>
+        </Col>
+        <Col xs="auto">
+          <Button variant="danger" onClick={() => { setPetType("Missing"); setShowModal(true); }}>Missing Pet</Button>
+        </Col>
+      </Row>
 
-        {/* Previews */}
-        <div id="previewImages">
-          {images.map((img, index) => (
-            <img key={index} src={img} alt={`preview-${index}`} />
-          ))}
-        </div>
-      
-        <div id="inputPetTextContainer">
-          <div id="leftSide">
+      <Modal show={showModal} onHide={() => setShowModal(false)} size="lg" centered>
+        <Modal.Header closeButton>
+          <Modal.Title>{petType} Pet Publication</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label>Upload Images</Form.Label>
+              <Form.Control type="file" multiple accept="image/*" onChange={uploadImage} ref={fileInputRef}/>
+              <Row className="mt-2">
+                {images.map((img, i) => (
+                  <Col xs={4} md={3} key={i} className="mb-2">
+                    <Image src={img} thumbnail style={{ height: '100px', objectFit: 'cover' }}/>
+                  </Col>
+                ))}
+              </Row>
+            </Form.Group>
 
-              {!showMissingModal ? (
-                <>
-                  <label>Name</label><br/>
-                  <input
-                    type="text"
-                    value={petName}
-                    onChange={(e) => setPetName(e.target.value)}
-                  /><br/>
-                </>
-                ) : null}
+            {petType !== "Missing" && (
+              <Form.Group className="mb-3">
+                <Form.Label>Name</Form.Label>
+                <Form.Control type="text" value={petName} onChange={e => setPetName(e.target.value)} />
+              </Form.Group>
+            )}
 
-                
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Breed</Form.Label>
+                  <Form.Control type="text" value={petBreed} onChange={e => setPetBreed(e.target.value)} />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Size</Form.Label>
+                  <Form.Control type="text" value={petSize} onChange={e => setPetSize(e.target.value)} />
+                </Form.Group>
+              </Col>
+            </Row>
 
+            {petType !== "Missing" && (
+              <Form.Group className="mb-3">
+                <Form.Label>Age</Form.Label>
+                <Form.Control type="number" value={petAge} onChange={e => setPetAge(e.target.value)} />
+              </Form.Group>
+            )}
 
-            <label>Breed</label><br/>
-            <input type="text" value={petBreed} onChange={(e) => setPetBreed(e.target.value)} /><br/>
-            <label>Size</label><br/>
-            <input type="text" value={petSize} onChange={(e) => setPetSize(e.target.value)} /><br/>
-          </div>
-          <div id="rightSide">
+            <Form.Group className="mb-3">
+              <Form.Label>Specie</Form.Label>
+              <Form.Control type="text" value={petSpecie} onChange={e => setPetSpecie(e.target.value)} />
+            </Form.Group>
 
+            <Form.Group className="mb-3">
+              <Form.Label>Ubication</Form.Label>
+              <Form.Control type="text" value={petUbication} onChange={e => setPetUbication(e.target.value)} />
+            </Form.Group>
 
-                {!showMissingModal ? (
-                <>
-                  <label>Age</label><br/>
-                  <input
-                    type="number"
-                    value={petAge}
-                    onChange={(e) => setPetAge(e.target.value)}
-                  /><br/>
-                </>
-                ) : null}
-
-
-            <label>Specie</label><br/>
-            <input type="text" value={petSpecie} onChange={(e) => setPetSpecie(e.target.value)} /><br/>
-
-
-            <label>Ubication</label><br/>
-            <input type="text" value={petUbication} onChange={(e) => setPetUbication(e.target.value)} /><br/>
-          </div>
-          
-        </div>
-        <label>description</label><br/>
-        <input id="petDescription"type="text" value={petDescription} onChange={(e) => setpetDescription(e.target.value)}/>
-        <button onClick={publish}>publish pet</button>
-        <button onClick={closeAdoptionModal}>Close</button>
-
-      </dialog>
-    </div>
+            <Form.Group className="mb-3">
+              <Form.Label>Description</Form.Label>
+              <Form.Control type="text" value={petDescription} onChange={e => setPetDescription(e.target.value)} />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>Close</Button>
+          <Button variant="primary" onClick={publish}>Publish</Button>
+        </Modal.Footer>
+      </Modal>
+    </Container>
   );
 }
 

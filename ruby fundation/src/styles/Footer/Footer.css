@@ -1,0 +1,7 @@
+#footer {
+    display: flex;
+    justify-content: space-between; /* opcional, distribuye elementos horizontalmente */
+    align-items: center; /* centra verticalmente */
+    gap: 20px; /* espacio entre cada div hijo */
+    padding: 10px 20px; /* opcional, agrega espacio interno */
+}

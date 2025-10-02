@@ -7,7 +7,19 @@
       "userPassword": "123"
     }
   ],
-  "users": [],
+  "users": [
+    {
+      "id": "09a5",
+      "UserName": "Maria",
+      "userId": "604860565",
+      "userGmail": "maria@gmail.com",
+      "userPassword": "123",
+      "userPhoneNumber": "64114552",
+      "userHelpedPets": 0,
+      "userAdoptedPets": 0,
+      "userUbication": "Puntarenas"
+    }
+  ],
   "adoptionPets": [],
   "missingPets": [],
   "searchingPets": [],

@@ -66,7 +66,6 @@ function OutPutMissing() {
                 </Modal.Body>
                 <Modal.Footer>
                     <button onClick={() => setShowModal(false)} >close</button>
-                    <button>Send message</button>
                 </Modal.Footer>
             </Modal>
             

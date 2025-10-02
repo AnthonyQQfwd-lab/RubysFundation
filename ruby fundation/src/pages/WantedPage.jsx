@@ -2,6 +2,7 @@ import React from 'react'
 import NavBar from '../components/NavBar'
 import OutPutWanted from '../components/OutPutWanted'
 import OutPutMissing from '../components/OutPutMissing'
+import FooterBar from '../components/FooterBar'
 import '../styles/WantedPage/wantedPage.css'
 function WantedPage() {
   return (

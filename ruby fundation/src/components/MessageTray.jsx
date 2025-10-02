@@ -1,44 +1,58 @@
-import React, { useState, useEffect } from 'react'
-import '../styles/MessagePage/MessagePage.css'
-import { getMessages } from '../services/ServicesMessage'
+import React from 'react'
 import Card from 'react-bootstrap/Card';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Badge from 'react-bootstrap/Badge';
+import Button from 'react-bootstrap/Button';
 
 function MessageTray({ setCurrentConversation, myConversations, currentUser }) {
-    
     return (
-        <div id="leftSide">
-            {currentUser && myConversations.map(conversation => 
-                <Card key={conversation.id} className="mb-2 p-2 shadow-sm" onClick={() => { setCurrentConversation(conversation)}}>
-                    <Card.Header>
-                        {conversation.participants.map(participant =>
-                            participant.userId !== currentUser.userId ? (
-                                <h1 key={participant.userId} className='tittleChat'>
-                                {participant.UserName}
-                                </h1>
-                            ) : null
-                        )}
-                    </Card.Header>
-                    <Card.Body>
-                        {
-                        conversation?.about?.status === "Adoption" ? (
-                            <p>
-                            conversation about:<br/> {conversation.about.name}
-                            </p>
-                        ) : conversation?.about?.status === "Wanted" ? (
-                            <p>conversation about wanted pet</p>
-                        ) : conversation?.about?.status === "Missing" ? (
-                            <p>conversation about missing pet</p>
-                        ) : (
-                            <p>conversation about pet</p>
-                        )
-                        }
-                        
-                    </Card.Body>
-                    <Card.Footer>
+        <div className="d-flex flex-column" style={{ maxHeight: '90vh', overflowY: 'auto', padding: '10px' }}>
+            {currentUser && myConversations.map(conversation => {
+                const otherParticipants = conversation.participants.filter(p => p.userId !== currentUser.userId);
 
-                    </Card.Footer>
-                </Card>
-            )}
+                return (
+                    <Card 
+                        key={conversation.id} 
+                        className="mb-2 shadow-sm"
+                        onClick={() => setCurrentConversation(conversation)}
+                        style={{ cursor: 'pointer' }}
+                    >
+                        <Card.Header className="d-flex justify-content-between align-items-center">
+                            <div>
+                                {otherParticipants.map(participant => (
+                                    <h6 key={participant.userId} className="mb-0">
+                                        {participant.UserName}
+                                    </h6>
+                                ))}
+                            </div>
+                            <Badge bg="secondary">
+                                {conversation?.about?.status || 'Pet'}
+                            </Badge>
+                        </Card.Header>
+                        <Card.Body>
+                            <ListGroup variant="flush">
+                                {conversation?.about?.status === "Adoption" && (
+                                    <ListGroup.Item>
+                                        Conversation about: {conversation.about.name}
+                                    </ListGroup.Item>
+                                )}
+                                {conversation?.about?.status === "Wanted" && (
+                                    <ListGroup.Item>Conversation about wanted pet</ListGroup.Item>
+                                )}
+                                {conversation?.about?.status === "Missing" && (
+                                    <ListGroup.Item>Conversation about missing pet</ListGroup.Item>
+                                )}
+                                {!conversation?.about?.status && (
+                                    <ListGroup.Item>Conversation about pet</ListGroup.Item>
+                                )}
+                            </ListGroup>
+                        </Card.Body>
+                        <Card.Footer className="text-end">
+                            <Button variant="outline-primary" size="sm">Open</Button>
+                        </Card.Footer>
+                    </Card>
+                )
+            })}
         </div>
     )
 }

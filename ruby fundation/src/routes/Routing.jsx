@@ -10,6 +10,7 @@ import WantedPage from '../pages/WantedPage';
 import AdminPage from '../pages/AdminPage';
 import PrivateRoute from './PrivateRoute';
 import PrivteRouteAdmind from './PrivteRouteAdmind';
+import AboutUsPage from '../pages/AboutUsPage';
 const Routing = () => {
   return (
     
@@ -25,6 +26,7 @@ const Routing = () => {
             <Route path='Post' element={<PrivateRoute><PostPage /></PrivateRoute>} />
             <Route path='Profile' element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
             <Route path='AdminDashboard' element={<PrivteRouteAdmind><AdminPage /></PrivteRouteAdmind>} />
+            <Route path='Information' element={<PrivateRoute><AboutUsPage /></PrivateRoute>} />
         </Routes>
     </Router>
   );
