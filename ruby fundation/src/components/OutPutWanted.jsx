@@ -84,7 +84,7 @@ const [pets, setPets] = useState([])
                     <Card.Footer>
                         
                         <button onClick={() => openDialog(pet) }>See more</button>
-                        <ContactBtn  userId={currentUser.userId} keeperId={pet.keeperId} petId={pet.id}/>
+                        <ContactBtn  userId={currentUser.userId} keeperId={pet.keeperId} petId={pet.id} petStatus={pet.status}/>
                     </Card.Footer>
                 </Card>
             )}

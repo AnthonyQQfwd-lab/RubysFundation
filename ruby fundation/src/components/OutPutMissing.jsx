@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { getPets } from '../services/ServicesAdoptionPets'
+import { getSearchingPets } from '../services/ServicesSearchingPets';
 
 import Card from 'react-bootstrap/Card';
 import Modal from 'react-bootstrap/Modal';
@@ -7,9 +7,8 @@ import '../styles/HomePage/HomePage.css'
 import CarouselPet from './CarouselPet';
 import ContactBtn from './ContactBtn';
 
-
-function OutPutAdoption() {
-    const [pets, setPets] = useState([])
+function OutPutMissing() {
+  const [pets, setPets] = useState([])
     const [pet, setPet] = useState({})
     const [showModal, setShowModal] = useState(false)
     
@@ -18,8 +17,8 @@ function OutPutAdoption() {
     useEffect(() => {
         const fetchPets = async () => {
             try {
-                const adoptionPets = await getPets()
-                setPets(adoptionPets)
+                const searchingPets = await getSearchingPets()
+                setPets(searchingPets)
             } catch (error) {
                 console.error("Error getting pets", error)
             }
@@ -96,4 +95,4 @@ function OutPutAdoption() {
     )
 }
 
-export default OutPutAdoption
+export default OutPutMissing

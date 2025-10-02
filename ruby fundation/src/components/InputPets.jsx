@@ -48,14 +48,15 @@ function InputPets() {
     const pet = {
       photos: images,
       name: petName,
-      keeper: currentUser.Name,
+      keeper: currentUser.name,
       keeperId: currentUser.userId,
       specie: petSpecie,
       breed: petBreed,
       size: petSize,
       age: petAge,
       description: petDescription,
-      ubication: petUbication
+      ubication: petUbication,
+      status: showAdoptionModal? "Adoption": showMissingModal? "Missing": showWantedModal? "Wanted" : "unknow"
     };
     
     try {

@@ -1,5 +1,12 @@
 {
-  "admins": [],
+  "admins": [
+    {
+      "id": "1",
+      "UserName": "Anthony Quiang Quiros ",
+      "adminGmail": "anthony@gmail.com",
+      "userPassword": "123"
+    }
+  ],
   "users": [],
   "adoptionPets": [],
   "missingPets": [],

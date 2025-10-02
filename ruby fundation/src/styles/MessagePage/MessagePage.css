@@ -25,11 +25,17 @@ html, body, #root {
   flex-direction: column;
 }
 
+#chat {
+  flex: 1;                /* ocupa todo el espacio disponible en su contenedor */
+  overflow-y: auto;       /* activa scroll si se pasa del límite */
+  max-height: 98%;       /* asegura que nunca crezca más que su contenedor */
+}
+
 #rightSide {
   width: 70%;
   height: 100%;
   background-color: #f0f0f0;
-  overflow-y: auto;
+  
   
 }
 

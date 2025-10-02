@@ -19,7 +19,20 @@ function MessageTray({ setCurrentConversation, myConversations, currentUser }) {
                         )}
                     </Card.Header>
                     <Card.Body>
-                        <p>conversation about:<br/> {conversation.about.name} </p>
+                        {
+                        conversation?.about?.status === "Adoption" ? (
+                            <p>
+                            conversation about:<br/> {conversation.about.name}
+                            </p>
+                        ) : conversation?.about?.status === "Wanted" ? (
+                            <p>conversation about wanted pet</p>
+                        ) : conversation?.about?.status === "Missing" ? (
+                            <p>conversation about missing pet</p>
+                        ) : (
+                            <p>conversation about pet</p>
+                        )
+                        }
+                        
                     </Card.Body>
                     <Card.Footer>
 

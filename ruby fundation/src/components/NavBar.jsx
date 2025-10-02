@@ -3,50 +3,54 @@ import { useNavigate } from 'react-router-dom';
 import { getUsers } from '../services/ServicesUsers';
 
 import '../styles/NavBar/NavBar.css'
+
 function NavBar() {
-    const navigate = useNavigate();
-    function singOut()
-    {
-        navigate('/');
-        localStorage.removeItem('token');
-    }
+  const [user, setUser] = useState({});
+  const navigate = useNavigate();
 
-    function goToHomePage()
-    {
-      navigate('/Home')
-    }
+  useEffect(() => {
+    const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+    setUser(currentUser);
+  }, []);
 
-    function goToWantedPage()
-    {
-      navigate('/wanted')
-    }
+  function singOut() {
+    navigate('/');
+    localStorage.removeItem('token');
+  }
 
-    function goToProfilePage()
-    {
-      navigate('/Profile')
-    }
+  function goToHomePage() {
+    navigate('/Home');
+  }
 
-    function goToPostPage()
-    {
-      navigate('/Post')
-    }
+  function goToWantedPage() {
+    navigate('/wanted');
+  }
+
+  function goToProfilePage() {
+    navigate('/Profile');
+  }
+
+  function goToPostPage() {
+    navigate('/Post');
+  }
     
-    function goToMessagePage()
-    {
-      navigate('/Message')
-    }
+  function goToMessagePage() {
+    navigate('/Message');
+  }
 
   return (
     <div id="topNav">
-        <img id="logoNavBar"src="https://veryceleb.com/wp-content/uploads/brian-peppers_17594-780x405-768x399.jpeg" alt="" />
-        <button onClick={goToHomePage}>Home</button>
-        <button onClick={goToWantedPage}>Wanted</button>
-        <button onClick={goToProfilePage}>Profile</button>
-        <button onClick={goToPostPage}>Create</button>
-        <button onClick={goToMessagePage}>Chat</button>
-        <button onClick={singOut}>Log Out</button>
+      <img id="logoNavBar" src="..\public\images\Rubys_Fundation_Logo.png" alt="logo" />
+      <button onClick={goToHomePage}>Home</button>
+      <button onClick={goToWantedPage}>Wanted</button>
+      <button onClick={goToProfilePage}>Profile</button>
+      <button onClick={goToPostPage}>Create</button>
+      <button onClick={goToMessagePage}>Chat</button>
+      <button onClick={singOut}>Log Out</button>
+      
+      
     </div>
   )
 }
 
-export default NavBar
+export default NavBar;
